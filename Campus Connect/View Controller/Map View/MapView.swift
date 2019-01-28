@@ -101,8 +101,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     
     var driverLocation = CLLocationCoordinate2D()
-    
-    var isAccepted = false
+    var driverMarker = GMSMarker()
     var progress: KDCircularProgress!
     
     var current_request_trip_key = ""
@@ -219,14 +218,11 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     var localLocation: CLLocation!
     
     
-    var driverpath = GMSPath()
-    var pathcount:Int = 0
-    var previouscount:Int = 0
+    
     var visibleRegion = GMSVisibleRegion()
     var bounds = GMSCoordinateBounds()
     
-    
-    var animatedrivermarker = GMSMarker()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -449,6 +445,8 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         
     }
+    
+    
     
     // check signal and send local notification
     func observeSingalCheck(driverUID: String, key: String) {
@@ -844,8 +842,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     
     
-    
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -853,6 +849,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         pulsator.stop()
         
     }
+    
+    
+ 
     
     
     
@@ -1089,7 +1088,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                                         
                                                         self.locationManager.startUpdatingLocation()
                                                         
-                                                        
+                                                        self.driverMarker.map = nil
                                                         self.drawDirection(pickup: Mylocation, destination: DestinationLocation) {
                                                             
                                                             self.locationManager.startUpdatingLocation()
@@ -1576,11 +1575,13 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     }
     
     func fitAllMarkers(_path: GMSPath) {
+        
         var bounds = GMSCoordinateBounds()
         for index in 1..._path.count() {
             bounds = bounds.includingCoordinate(_path.coordinate(at: index))
         }
-        mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 60.0))
+        
+        mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 100.0))
         
     }
     
@@ -2787,40 +2788,18 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     func observeMovingDriverCoordinate(UID: String, key: String) {
         
-        // Richard
-        
-        //Call this function once. then this function will be called when the previous animation is complete Please check function  animatewithpath() else condition
-        
         rider_trip_coordinator_handle = DataService.instance.mainDataBaseRef.child("On_Trip_Driver_coordinator").child(UID).child(key).observe(.value, with: { (DriverCoor ) in
             
-            if let coor = DriverCoor.value as? Dictionary<String, Any>
-            {
+            if let coor = DriverCoor.value as? Dictionary<String, Any> {
+                
                 let location = CLLocationCoordinate2D(latitude: coor["Lat"] as! CLLocationDegrees, longitude: coor["Lon"] as! CLLocationDegrees)
+                self.driverMarker.position = location
+                self.driverMarker.tracksViewChanges = true
+                self.driverMarker.map = self.mapView
                 
-                if location.latitude != self.driverLocation.latitude, location.longitude != self.driverLocation.longitude {
-                    
-                    self.locationarray.add(location);
-                    
-                    
-                    if self.animted == false {
-                        
-                        self.animted = true
-                        
-                        let old = self.locationarray.object(at: 0) as! CLLocationCoordinate2D;
-                        let new = self.locationarray.object(at: 1) as! CLLocationCoordinate2D;
-                        
-                        self.showanimation(oldcoord: old, newcoord: new)
-                        
-                        self.previouscount = 1;
-                        
-                        
-                        
-                    }
-                    
-                }
-               
+                print("Updated")
                 
-
+                
                 
             }
             
@@ -2878,7 +2857,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                             self.locationManager.startUpdatingLocation()
                             
                             
-                            self.animatedrivermarker.map = nil
+                            
                             
                             self.drawDirection(pickup: Mylocation, destination: DestinationLocation) {
                                 
@@ -2990,6 +2969,17 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             self.marker.appearAnimation = .pop
             myView.addSubview(markerView)
             
+            
+            let IconImages = resizeImage(image: UIImage(named: "black")!, targetSize: CGSize(width: 50.0, height: 50.0))
+            self.driverMarker.position = origins
+            self.driverMarker.icon = IconImages
+            self.driverMarker.snippet = self.eta
+            self.driverMarker.tracksViewChanges = true
+            
+            
+            //gameMarker.infoWindowAnchor = CGPoint(x: 0.5, y: 0.1)
+            self.driverMarker.map = self.mapView
+            self.mapView.selectedMarker = self.driverMarker
             
             
           
@@ -3584,182 +3574,11 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     // car animation
     
-    func adddrivermarker()
-    {
-        animatedrivermarker.icon = UIImage(named: "carIcon") ;
-        self.animatedrivermarker.map = self.mapView
-    }
+
     
     
-    func showanimation(oldcoord: CLLocationCoordinate2D, newcoord: CLLocationCoordinate2D)
-    {
-        adddrivermarker();
-        
-        // Richard
-        
-        // old and new coordinate value should always be there not 0.0 or nil
-        
-        // Plese don't remove this line . if you zoom in more than 18 . car will move very fast.  you can  experiment with this values  .
-        
-        mapView.setMinZoom(14, maxZoom: 18)
-        
-        // .................. //
-        
-        let point = mapView.projection.point(for: oldcoord)
-        let camera = GMSCameraPosition.camera(withTarget: oldcoord, zoom: mapView.camera.zoom)
-        let updatecamera = GMSCameraUpdate.setCamera(camera)
-        GMSCameraUpdate.setTarget(mapView.projection.coordinate(for: point))
-        mapView.animate(with: updatecamera)
-        
-        let source = CLLocation(latitude: oldcoord.latitude, longitude: oldcoord.longitude)
-        let dest = CLLocation(latitude: newcoord.latitude, longitude: newcoord.longitude)
-        
-        if (source.coordinate.latitude != dest.coordinate.latitude || source.coordinate.longitude != dest.coordinate.longitude)
-        {
-            fetchPolylineWithOrigin(origin: source, destination: dest) { (polyline) in
-                
-            }
-        } 
-        
-    }
-    
-    func fetchPolylineWithOrigin(origin:CLLocation, destination:CLLocation, completionHandler:(GMSPolyline)->Void)
-    {
-        let originstring = String(origin.coordinate.latitude) + "," + String(origin.coordinate.longitude)
-        let destinationString = String(destination.coordinate.latitude) + "," + String(destination.coordinate.longitude)
-        let directionsAPI = "https://maps.googleapis.com/maps/api/directions/json?"
-        let directionsUrlString = directionsAPI+"origin="+originstring+"&destination="+destinationString+"&mode=driving"+"&key="+googleMap_Key
-        let directionsUrl = URL(string: directionsUrlString)
-        // webservice(url: directionsUrl!);
-        
-        webservice(url: directionsUrl!) { () in
-            
-            
-        }
-    }
-    
-    public func webservice(url:URL, block:@escaping ()->Void)
-    {
-        let urlSession = URLSession(configuration: URLSessionConfiguration.default)
-        let task = urlSession.dataTask(with: url) { (data, response, error) in
-            DispatchQueue.main.async
-                {
-                    guard let data = data, error == nil else {
-                        print(error ?? "Unknown error")
-                        block()
-                        return
-                    }
-                    do {
-                        let responseObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as! [String:Any]
-                        let routesArray = responseObject["routes"] as! NSArray
-                        if routesArray.count>0
-                        {
-                            let routeDict = routesArray[0] as! NSDictionary
-                            let routeOverviewPolyline = routeDict ["overview_polyline"] as! NSDictionary
-                            let points = routeOverviewPolyline["points"] as! NSString
-                            self.driverpath = GMSPath.init(fromEncodedPath: points as String)!
-                            self.pathcount = 1;
-                            
-                            self.animatewithpath()
-                        }
-                        block()
-                    } catch {
-                        print(error)
-                        block()
-                    }
-            }
-            
-        }
-        task.resume()
-    }
-    
-    func angleFromCoordinate(first:CLLocationCoordinate2D ,second: CLLocationCoordinate2D) -> CLLocationDegrees
-    {
-        
-        let deltaLongitude = second.longitude - first.longitude;
-        let deltaLatitude = second.latitude - first.latitude;
-        let angle = (.pi * 0.5) - atan(deltaLatitude / deltaLongitude);
-        
-        if deltaLongitude>0
-        {
-            return angle;
-        }
-        else if (deltaLongitude < 0)
-        {
-            return angle + .pi;
-        }
-        else if (deltaLatitude < 0)
-        {
-            return .pi;
-        }
-        
-        return 0.0;
-        
-    }
-    
-    @objc func animatewithpath()
-    {
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(2.0)
-        let coord = driverpath.coordinate(at:UInt(pathcount));
-        let point = mapView.projection.point(for: coord)
-  
-        
-        
-        let camera = GMSCameraPosition.camera(withTarget: coord, zoom: mapView.camera.zoom)
-        let updatecamera = GMSCameraUpdate.setCamera(camera)
-        self.animatedrivermarker.position = coord;
-        GMSCameraUpdate.setTarget(mapView.projection.coordinate(for: point))
-        self.mapView.animate(with: updatecamera)
-        
-        CATransaction.commit()
-        CATransaction.setCompletionBlock {
-            
-            
-            
-            if self.pathcount<self.driverpath.count()-1
-            {
-                
-                self.animatedrivermarker.groundAnchor = CGPoint(x: CGFloat(0.5), y: CGFloat(0.5))
-                self.animatedrivermarker.rotation = self.angleFromCoordinate(first: coord, second: self.driverpath.coordinate(at:UInt(self.pathcount-1))) * (180.0/Double.pi)+180
-                
-                self.pathcount = self.pathcount+1;
-                
-                self.perform( #selector(self.animatewithpath), with:nil, afterDelay: 2.0)
-            }
-            else if self.pathcount == self.driverpath.count()-1
-            {
-                //Richard
-                self.animatedrivermarker.groundAnchor = CGPoint(x: CGFloat(0.5), y: CGFloat(0.5))
-                self.animatedrivermarker.rotation = self.angleFromCoordinate(first: coord, second: self.driverpath.coordinate(at:UInt(self.pathcount-1))) * (180.0/Double.pi)+180
-                self.perform( #selector(self.callanimation), with:nil, afterDelay: 2.0)
-            }
-            else
-            {
-                
-                
-            }
-            
-            
-        }
-        
-        
-    }
     
     
-    @objc func callanimation()
-    {
-        
-        if(self.previouscount<self.locationarray.count-1)
-        {
-            let old = self.locationarray.object(at: self.previouscount) as! CLLocationCoordinate2D;
-            self.previouscount = self.previouscount+1;
-            let new = self.locationarray.object(at: self.previouscount) as! CLLocationCoordinate2D;
-            self.showanimation(oldcoord: old, newcoord: new)
-            print("method called");
-        }
-        
-    }
     
     
     @IBAction func cancelRideBtnPressed(_ sender: Any) {
