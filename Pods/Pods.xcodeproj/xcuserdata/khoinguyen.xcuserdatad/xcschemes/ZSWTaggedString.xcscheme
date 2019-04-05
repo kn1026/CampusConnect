@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "871C9BD91889FD2EE69556385C9508F0"
+               BlueprintIdentifier = "390915BCCDACA73CF86B0BE669ED5679"
                BlueprintName = "ZSWTaggedString"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "ZSWTaggedString.framework">

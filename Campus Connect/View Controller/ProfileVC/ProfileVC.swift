@@ -23,7 +23,9 @@ class ProfileVC: UIViewController, UITextFieldDelegate, UINavigationControllerDe
     @IBOutlet weak var phoneTxtField: UITextField!
     @IBOutlet weak var lastNameTxtField: UITextField!
     @IBOutlet weak var firstNameTxtField: UITextField!
+    @IBOutlet weak var wheelChairLbl: UILabel!
     
+    @IBOutlet weak var wheelChair: UISwitch!
     @IBOutlet weak var userImg: UIImageView!
     
     var Changedimage: UIImage!
@@ -54,7 +56,7 @@ class ProfileVC: UIViewController, UITextFieldDelegate, UINavigationControllerDe
         }
         
         
-        
+        checkIfUserNeedWheelchair()
         
         // Do any additional setup after loading the view.
     }
@@ -65,6 +67,18 @@ class ProfileVC: UIViewController, UITextFieldDelegate, UINavigationControllerDe
         if let campus = try? InformationStorage?.object(ofType: String.self, forKey: "campus") {
             
             uniTxtField.placeholder = campus
+            
+            if campus == "University of New Hampshire"{
+                
+                wheelChair.isHidden = false
+                wheelChairLbl.isHidden = false
+                
+                } else {
+                
+                
+                wheelChair.isHidden = true
+                wheelChairLbl.isHidden = true
+            }
             
         }
         
@@ -91,6 +105,36 @@ class ProfileVC: UIViewController, UITextFieldDelegate, UINavigationControllerDe
             }
             
         }
+    }
+    
+    @IBAction func wheelChairBtnPressed(_ sender: Any) {
+        
+        if wheelChair.isOn == true {
+            
+            DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).setValue(["Timestamp": ServerValue.timestamp()])
+            
+        } else {
+            
+            DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).removeValue()
+            
+        }
+        
+    }
+    
+    func checkIfUserNeedWheelchair() {
+        
+        
+        DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).observeSingleEvent(of: .value, with: { (data) in
+            
+            if data.exists() {
+                self.wheelChair.isOn = true
+            } else {
+                self.wheelChair.isOn = false
+            }
+            
+        })
+        
+        
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {

@@ -15,8 +15,8 @@ target 'Campus Connect' do
     pod 'GoogleMaps'
     pod 'GooglePlaces'
     pod 'SwiftOCR'
-    pod 'Alamofire', '~> 4.5'
-    pod 'AlamofireImage', '~> 3.3'
+    pod 'Alamofire'
+    pod 'AlamofireImage'
     pod 'GeoFire'
     pod 'SinchVerification-Swift'
     pod 'KDCircularProgress'
@@ -38,7 +38,4 @@ target 'Campus Connect' do
 
   # Pods for Campus Connect
 
-  
-
-  
 end

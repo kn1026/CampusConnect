@@ -93,6 +93,8 @@ class emailVC: UIViewController {
                 
                 var finalEmail = ""
                 
+                
+                
                 if uniDomainTxt.text != "Campus-connect-test"  {
                     
                     finalEmail = email + Unidict[uniName!]!

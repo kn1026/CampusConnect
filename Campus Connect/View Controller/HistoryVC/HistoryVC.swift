@@ -60,7 +60,7 @@ class HistoryVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             
             if TripHistory.exists() {
                 
-                print("Exists")
+            
                 if let snap = TripHistory.children.allObjects as? [DataSnapshot] {
                     
                     for item in snap {

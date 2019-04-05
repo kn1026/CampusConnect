@@ -32,6 +32,8 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     var Driver_Tip_name: String?
     
+    @IBOutlet weak var statusLbl: UILabel!
+    @IBOutlet weak var bookStack: UIStackView!
     @IBOutlet weak var NoneDollarTip: UIButton!
     @IBOutlet weak var FiveDollarTip: UIButton!
     @IBOutlet weak var TwoDollarTip: UIButton!
@@ -49,6 +51,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     @IBOutlet weak var BookCarBtn: UIButton!
     
     
+    @IBOutlet weak var InfoViewLbl: UIView!
+    @IBOutlet weak var OffCampusFareLbl: UILabel!
+    @IBOutlet weak var OnCampusFareLbl: UILabel!
     //@IBOutlet weak var restaurantView: UIView!
     //@IBOutlet weak var restaurantTrailing: NSLayoutConstraint!
     var rateCount = 0
@@ -149,12 +154,10 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     
     
-    @IBOutlet weak var seats4View: UIView!
-    @IBOutlet weak var seats7View: UIView!
-    
+  
     @IBOutlet weak var TotalriderView: UIView!
     
-    @IBOutlet weak var chooseCarView: modifiedChooseCarView!
+    
     @IBOutlet weak var blurView: UIView!
     
     @IBOutlet weak var bookCarView: bookCarView!
@@ -266,8 +269,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
         }
         
-        
-        
         tapGesture = UITapGestureRecognizer(target: self, action:#selector(MapView.closeKeyboard))
         LocalNotification.registerForLocalNotification(on: UIApplication.shared)
         ratingText.delegate = self
@@ -336,14 +337,86 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
         }
         
-        
-        
-        
-        
         checkCampusDistance()
         checkIfRiderIsInProgress()
+        
         //checkDriverApplication()
         
+        Messaging.messaging().subscribe(toTopic: "Campus Connect") { error in
+            print("Subscribed to cc topic")
+        }
+        
+    }
+    
+    
+    
+    func check_if_notice_needed() {
+        
+        
+        DataService.instance.mainDataBaseRef.child("Request_driver").observeSingleEvent(of: .value, with: { (RateData) in
+            
+            if RateData.exists() {
+                
+                
+                if let dict = RateData.value as? Dictionary<String, Any> {
+                    
+                    
+                    if let RateGet = dict["TimeStamp"] as? Double {
+                        
+                        let timestamps = Double(NSDate().timeIntervalSince1970 * 1000)
+                        let change = timestamps - RateGet
+                        
+                       
+                        
+                        if let Count = dict["Time"] as? Int {
+                            
+                            if Count == 9, change < 3600 {
+                                
+                                
+                                
+                                DataService.instance.mainDataBaseRef.child("Request_driver").setValue(["Time": 1, "TimeStamp": ServerValue.timestamp()])
+                                
+                                self.send_driver_online()
+                                
+                            } else {
+                                
+                                let count = Count + 1
+                                
+                                
+                                DataService.instance.mainDataBaseRef.child("Request_driver").setValue(["Time": count, "TimeStamp": ServerValue.timestamp()])
+                                
+                                
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    
+                }
+                
+                
+            } else {
+                
+                
+                DataService.instance.mainDataBaseRef.child("Request_driver").setValue(["Time": 1, "TimeStamp": ServerValue.timestamp()])
+                
+                
+            }
+            
+        })
+        
+        
+        
+        
+    }
+
+    func send_driver_online() {
+        
+        Database.database().reference().child("Campus-Connect").child("Request_noti").removeValue()
+        
+    Database.database().reference().child("Campus-Connect").child("Request_noti").child("sdkjhf7823642").setValue(["sdkjhf7823642":"sdkjhf7823642"])
         
         
     }
@@ -682,7 +755,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             } else {
                 
                 
-                
+                print("Rated all already")
                 
                 
             }
@@ -851,7 +924,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     }
     
     
- 
+    
+
+    
     
     
     
@@ -875,8 +950,29 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 }
                 
                 if self.bookCarView.isHidden != true {
+                    DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).observeSingleEvent(of: .value, with: { (data) in
+                        
+                        if data.exists() {
+                            
+                            self.bookStack.isHidden = true
+                            self.statusLbl.isHidden = false
+                            self.statusLbl.text = "Wheelchair not available"
+                            
+                        } else{
+                            
+                            if self.statusLbl.text != "Out of range" {
+                                
+                                self.checkForDriverAround()
+                                
+                            }
+                            
+                            
+                            
+                        }
+                        
+                        
+                    })
                     
-                    self.checkForDriverAround()
                     
                 }
                 
@@ -893,7 +989,10 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 
                 if self.bookCarView.isHidden != true {
                     
-                    self.BookCarBtn.setTitle("NO CONNECTION", for: .normal)
+                    self.bookStack.isHidden = true
+                    self.statusLbl.isHidden = false
+                    self.statusLbl.text = "NO CONNECTION"
+                    
                     
                 }
                 
@@ -1057,9 +1156,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                                         
                                                         
                                                         self.riderView.isHidden = true
-                                                        
-                                                        
-                                                        //DataService.instance.mainDataBaseRef.child("Cancel_request").child(userUID).removeAllObservers()
+ 
                                                         DataService.instance.mainDataBaseRef.child("On_Trip_Pick_Up").child("Rider").child(userUID).removeValue()
                                                         DataService.instance.mainDataBaseRef.child("On_Trip_Pick_Up").child("Driver").child(self.tripDriverReuslt.UID).removeValue()
                                                         
@@ -1126,7 +1223,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                         
                     } else {
                         
-                        print("Can't find")
+                        print("Not in any progress")
                         
                     }
                     
@@ -1219,6 +1316,23 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
     }
     
+    @IBAction func infoBtnPressed(_ sender: Any) {
+        
+        if InfoViewLbl.isHidden == true {
+            InfoViewLbl.isHidden = false
+        }
+        
+    }
+    
+    
+    @IBAction func DoneInfoBtnPressed(_ sender: Any) {
+        
+        if InfoViewLbl.isHidden == false {
+            InfoViewLbl.isHidden = true
+        }
+        
+        
+    }
     @IBAction func openSearchController(_ sender: Any) {
         
         
@@ -1231,13 +1345,15 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         
         acceptBookCar = false
+        self.bookStack.isHidden = true
+        self.statusLbl.isHidden = true
         
-        checkForDriverAround()
         
         NotificationCenter.default.removeObserver(self, name: (NSNotification.Name(rawValue: "GetRide")), object: nil)
         
         closeRequestBtn2.isHidden = false
         closeRequestBtn1.isHidden = false
+        InfoViewLbl.isHidden = true
         bookCarView.isHidden = false
         destinationBtn.isHidden = true
         
@@ -1248,7 +1364,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         
         
-        let drag = 200
+        let drag = 350
         
         
         let pickUp = CLLocation(latitude: pickUpLocation.latitude, longitude: pickUpLocation.longitude)
@@ -1274,7 +1390,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
             
             self.mapViewBottomConstraint.constant = CGFloat(drag)
-            self.bookCarView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - 240, width: self.bookCarView.frame.width, height: self.bookCarView.frame.height)
+            self.bookCarView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - 370, width: self.bookCarView.frame.width, height: self.bookCarView.frame.height)
             
         }), completion:  { (finished: Bool) in
             
@@ -1395,32 +1511,71 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                     finalDistance = distance
                                     if let result = Float(distance) {
                                         
-                                        if result <= Float(5.0) {
+                                        
+                                        if result > 10 {
                                             
-                                            
-                                            
-                                            finalPrice = basePrice
-                                            
-                                            self.carPrice.text = "$\(finalPrice)"
+                                          self.carPrice.text = "$0.00"
+                                        self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $0.00"
+                                            self.bookStack.isHidden = true
+                                            self.statusLbl.isHidden = false
+                                            self.statusLbl.text = "Out of range"
                                             
                                         } else {
                                             
-                                            let base = Float(basePrice)
-                                            let change = result - 5.0
-                                            var final = base! + change
-                                            final = round(100*final)/100
-                                            
-                                            finalPrice = String(final)
-                                            
-                                            
-                                            
-                                            self.carPrice.text = "$\(finalPrice)"
-                                            
-                                            
+                                            DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).observeSingleEvent(of: .value, with: { (data) in
+                                                
+                                                if data.exists() {
+                                                    
+                                                    self.bookStack.isHidden = true
+                                                    self.statusLbl.isHidden = false
+                                                    self.statusLbl.text = "Wheelchair not available"
+                                                    
+                                                    
+                                                } else{
+                                                    
+                                                    self.checkForDriverAround()
+                                                    
+                                                    if result <= Float(5.0) {
+                                                        
+                                                        
+                                                        
+                                                        finalPrice = basePrice
+                                                        
+                                                        self.carPrice.text = "$\(finalPrice)"
+                                                        self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $\(finalPrice)"
+                                                        
+                                                        
+                                                    } else {
+                                                        
+                                                        let base = Float(basePrice)
+                                                        self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $\(basePrice)"
+
+                                                        let change = result - 5.0
+                                                        var final = base! + change
+                                                        final = round(100*final)/100
+                                                        
+                                                        finalPrice = String(final)
+                                                        
+                                                        
+                                                        
+                                                        self.carPrice.text = "$\(finalPrice)"
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                    }
+                                                    
+                                                }
+                                                
+                                                
+                                            })
                                             
                                             
                                             
                                         }
+                                        
+                                        
                                         
                                         
                                     }
@@ -1501,7 +1656,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
             
             
-            let IconImages = resizeImage(image: UIImage(named: "pin")!, targetSize: CGSize(width: 20.0, height: 20.0))
+            let IconImages = resizeImage(image: UIImage(named: "pin")!, targetSize: CGSize(width: 40.0, height: 40.0))
             let gameMarker = GMSMarker()
             gameMarker.position = destination
             gameMarker.icon = IconImages
@@ -1521,6 +1676,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         
     }
+    
+    
+    
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -1542,9 +1700,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             self.marker.tracksViewChanges = true
             self.marker.map = self.mapView
             
-            print("Updated")
             
-            if distance <= 0.2 {
+            
+            if distance <= 0.5 {
                 
                 
                 rate_driver_uid = tripDriverReuslt.UID
@@ -1581,7 +1739,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             bounds = bounds.includingCoordinate(_path.coordinate(at: index))
         }
         
-        mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 100.0))
+        mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 110.0))
         
     }
     
@@ -1847,6 +2005,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         let camera = GMSCameraPosition.camera(withLatitude: coordinate.latitude, longitude: coordinate.longitude, zoom: 13)
         
         
+        let cams = GMSCameraUpdate.setCamera(camera)
+        
+        
         self.marker.iconView = nil
         
         
@@ -1857,8 +2018,8 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         self.marker.map = mapView
         
         
-        self.mapView.camera = camera
-        self.mapView.animate(to: camera)
+        //self.mapView.camera = camera
+        self.mapView.moveCamera(cams)
         
         
         self.marker.isTappable = false
@@ -2029,8 +2190,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     // handle drag view
     
     @IBAction func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
-        
-        
         
         if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
             
@@ -2262,7 +2421,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         self.isTip = false
         self.movingKey = ""
         self.movingUID = ""
-        if BookCarBtn.titleLabel?.text == "REQUEST CC" {
+        if BookCarBtn.titleLabel?.text == "Confirm" {
             
             if acceptBookCar == true {
                 
@@ -2413,9 +2572,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
         }
         
-        
-        
-        
     }
     
     func request_ride(driverUID: String, completed: @escaping DownloadComplete) {
@@ -2427,6 +2583,10 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 if let email = try? InformationStorage?.object(ofType: String.self, forKey: "email") {
                     
                     let ref = DataService.instance.mainDataBaseRef.child("Trip_request").child(userUID).childByAutoId()
+                    
+                    DataService.instance.mainDataBaseRef.child("Trip_request_Count").childByAutoId().setValue(["Timestamp": ServerValue.timestamp()])
+                    
+                    
                     let key = ref.key
                     
                     let request_trip = makeRequestTripDict(pickUpAddress: pickUpAddress, destinationAddress: destinationAddress, pickUpLocation: pickUpLocation, DestinationLocation: DestinationLocation, phone: phone!, price: Float(finalPrice)!, pickUpName: name!, pickUpEmail: email!, Trip_key: key!, capturedKey: capturedKey, distance: finalDistance, rider_UID: userUID)
@@ -2675,6 +2835,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 UIApplication.shared.openURL(url)
             }
         } else {
+            
             print("Cannot Call")
             
         }
@@ -3120,12 +3281,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         let url = MainAPIClient.shared.baseURLString
         let urls = URL(string: url!)?.appendingPathComponent("pre_authorization")
         
-        /*
-         let price = Double(finalPrice)
-         var roundedPrice = price?.roundTo(places: 2)
-         
-         roundedPrice = roundedPrice! * 100
-         */
+
         
         
         
@@ -3274,11 +3430,21 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
             if self.listDriver.isEmpty == true {
                 
-                self.BookCarBtn.setTitle("NO CAR AVAILABLE", for: .normal)
+                self.bookStack.isHidden = true
+                self.statusLbl.isHidden = false
+                self.statusLbl.text = "No car available"
                 
             } else {
                 
-                self.BookCarBtn.setTitle("REQUEST CC", for: .normal)
+            
+
+                self.BookCarBtn.setTitle("Confirm", for: .normal)
+                self.BookCarBtn.backgroundColor = UIColor.black
+                self.BookCarBtn.setTitleColor(UIColor.white, for: .normal)
+                
+                self.bookStack.isHidden = false
+                self.statusLbl.isHidden = true
+                
                 
             }
             
@@ -3406,6 +3572,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                         
                     }
                     
+                    
+                    self.check_if_notice_needed()
+                    
                     self.showErrorAlert("Oops!", msg: "All drivers are busy with other riders right now, please try again")
                     
                 }
@@ -3437,6 +3606,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                     DataService.instance.mainDataBaseRef.child("Rider_Observe_Trip").child(userUID).removeObserver(withHandle: self.Rider_handle!)
                     
                 }
+                
+                
+                self.check_if_notice_needed()
                 
                 self.showErrorAlert("Oops!", msg: "All drivers are busy with other riders right now, please try again")
                 
@@ -3575,12 +3747,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     // car animation
     
 
-    
-    
-    
-    
-    
-    
     @IBAction func cancelRideBtnPressed(_ sender: Any) {
         
         let appearance = SCLAlertView.SCLAppearance(
@@ -3697,14 +3863,23 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         } else if self.becomeADriverBtn.titleLabel?.text == "Go to driver app" {
             
             
-            guard let url = URL(string: "http://campusconnectonline.com") else {
+            //Progess
+            let url = "https://itunes.apple.com/us/app/cc-driver/id1435010718"
+            
+            
+            guard let urls = URL(string: url) else {
                 return //be safe
             }
             
-            let vc = SFSafariViewController(url: url)
-            
-            
-            present(vc, animated: true, completion: nil)
+            if #available(iOS 10.0, *) {
+                
+                UIApplication.shared.open(urls)
+                
+            } else {
+                
+                UIApplication.shared.openURL(urls)
+                
+            }
             
             
         }
@@ -3796,14 +3971,14 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         if cardBrand == "Promote_code" {
             
-            last4CC.text = "1004"
+            last4CC.text = "2305"
             let icon = UIImage(named: "lg")
             cardImg.image = icon
             
             
         } else if cardBrand == "Apple_pay" {
             
-            last4CC.text = ""
+            last4CC.text = "1603"
             let icon = UIImage(named: "Apple pay")
             cardImg.image = icon
             
@@ -4241,7 +4416,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         NoneDollarTip.backgroundColor = UIColor.clear
         
         
-        tip = 3
+        tip = 5
         
     }
     
@@ -4433,7 +4608,6 @@ extension UITableView {
     }
 }
 
-
 extension MapView: PKPaymentAuthorizationViewControllerDelegate {
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
@@ -4574,6 +4748,7 @@ extension MapView: PKPaymentAuthorizationViewControllerDelegate {
     }
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        
         controller.dismiss(animated: true, completion: nil)
         
         

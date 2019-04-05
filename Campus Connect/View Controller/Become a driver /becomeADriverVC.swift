@@ -600,68 +600,75 @@ class becomeADriverVC: UIViewController, ZSWTappableLabelTapDelegate {
                         
                         self.uploadFaceImg(image: faceIDPhoto) {
                             
-      
-                            if let phone = try? InformationStorage?.object(ofType: String.self, forKey: "phone") {
+                            
+                            if let birthday = try? InformationStorage?.object(ofType: String.self, forKey: "birthday") {
                                 
-                                if let name = try? InformationStorage?.object(ofType: String.self, forKey: "user_name") {
+                                if let phone = try? InformationStorage?.object(ofType: String.self, forKey: "phone") {
                                     
-                                    if let email = try? InformationStorage?.object(ofType: String.self, forKey: "email") {
+                                    if let name = try? InformationStorage?.object(ofType: String.self, forKey: "user_name") {
                                         
-                                        if let campus = try? InformationStorage?.object(ofType: String.self, forKey: "campus") {
+                                        if let email = try? InformationStorage?.object(ofType: String.self, forKey: "email") {
                                             
-                                            if Selectedadd2Txt != "" {
+                                            if let campus = try? InformationStorage?.object(ofType: String.self, forKey: "campus") {
+                                                
+                                                if Selectedadd2Txt != "" {
+                                                    
+                                                    
+                                                    let Application: Dictionary<String, AnyObject> = ["SSNum": socialSecurityNum as AnyObject, "DriverLicdownloadUrl": self.DriverLicdownloadUrl as AnyObject, "DriverFaceIDdownloadUrl": self.faceIDPhotoUrl as AnyObject, "LicPlatedownloadUrl": self.LicPlatedownloadUrl as AnyObject, "CarRegistdownloadUrl": self.CarRegistdownloadUrl as AnyObject,"Timestamp": ServerValue.timestamp() as AnyObject, "userUID": userUID as AnyObject, "Car1downloadUrl": self.Car1downloadUrl as AnyObject, "Car2downloadUrl": self.Car2downloadUrl as AnyObject, "campus": campus as AnyObject, "email": email as AnyObject, "user_name": name as AnyObject, "phone": phone as AnyObject,"Selectedadd1Txt": Selectedadd1Txt as AnyObject, "Selectedadd2Txt": Selectedadd2Txt as AnyObject, "SelectedCityTxt": SelectedCityTxt as AnyObject, "SelectedStateTxt": SelectedStateTxt as AnyObject, "SelectedzipcodeTxt": SelectedzipcodeTxt as AnyObject, "DriverLics": DriverLicsFinal as AnyObject,"StateLics": StateLicsFinal as AnyObject, "Birthday": birthday as AnyObject]
+                                                    DataService.instance.mainDataBaseRef.child("Application_Request").child("New").child(userUID).setValue(Application)
+                                                    DataService.instance.mainDataBaseRef.child("Application_Request").child("Total").child(userUID).setValue(Application)
+                                                    
+                                                    
+                                                } else {
+                                                    
+                                                    
+                                                    let Application: Dictionary<String, AnyObject> = ["SSNum": socialSecurityNum as AnyObject, "DriverFaceIDdownloadUrl": self.faceIDPhotoUrl as AnyObject, "DriverLicdownloadUrl": self.DriverLicdownloadUrl as AnyObject, "LicPlatedownloadUrl": self.LicPlatedownloadUrl as AnyObject, "CarRegistdownloadUrl": self.CarRegistdownloadUrl as AnyObject,"Timestamp": ServerValue.timestamp() as AnyObject, "userUID": userUID as AnyObject, "Car1downloadUrl": self.Car1downloadUrl as AnyObject, "Car2downloadUrl": self.Car2downloadUrl as AnyObject, "campus": campus as AnyObject, "email": email as AnyObject, "user_name": name as AnyObject, "phone": phone as AnyObject,"Selectedadd1Txt": Selectedadd1Txt as AnyObject, "Selectedadd2Txt": "nil" as AnyObject, "SelectedCityTxt": SelectedCityTxt as AnyObject, "SelectedStateTxt": SelectedStateTxt as AnyObject, "SelectedzipcodeTxt": SelectedzipcodeTxt as AnyObject, "DriverLics": DriverLicsFinal as AnyObject,"StateLics": StateLicsFinal as AnyObject, "Birthday": birthday as AnyObject]
+                                                    
+                                                    
+                                                    DataService.instance.mainDataBaseRef.child("Application_Request").child("New").child(userUID).setValue(Application)
+                                                    DataService.instance.mainDataBaseRef.child("Application_Request").child("Total").child(userUID).setValue(Application)
+                                                    
+                                                }
                                                 
                                                 
-                                                let Application: Dictionary<String, AnyObject> = ["SSNum": socialSecurityNum as AnyObject, "DriverLicdownloadUrl": self.DriverLicdownloadUrl as AnyObject, "DriverFaceIDdownloadUrl": self.faceIDPhotoUrl as AnyObject, "LicPlatedownloadUrl": self.LicPlatedownloadUrl as AnyObject, "CarRegistdownloadUrl": self.CarRegistdownloadUrl as AnyObject,"Timestamp": ServerValue.timestamp() as AnyObject, "userUID": userUID as AnyObject, "Car1downloadUrl": self.Car1downloadUrl as AnyObject, "Car2downloadUrl": self.Car2downloadUrl as AnyObject, "campus": campus as AnyObject, "email": email as AnyObject, "user_name": name as AnyObject, "phone": phone as AnyObject,"Selectedadd1Txt": Selectedadd1Txt as AnyObject, "Selectedadd2Txt": Selectedadd2Txt as AnyObject, "SelectedCityTxt": SelectedCityTxt as AnyObject, "SelectedStateTxt": SelectedStateTxt as AnyObject, "SelectedzipcodeTxt": SelectedzipcodeTxt as AnyObject, "DriverLics": DriverLicsFinal as AnyObject,"StateLics": StateLicsFinal as AnyObject]
-                                                DataService.instance.mainDataBaseRef.child("Application_Request").child("New").child(userUID).setValue(Application)
-                                                DataService.instance.mainDataBaseRef.child("Application_Request").child("Total").child(userUID).setValue(Application)
+                                                SwiftLoader.hide()
                                                 
+                                                let appearance = SCLAlertView.SCLAppearance(
+                                                    kTitleFont: UIFont(name: "HelveticaNeue", size: 20)!,
+                                                    kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
+                                                    kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
+                                                    showCloseButton: false,
+                                                    dynamicAnimatorActive: true,
+                                                    buttonsLayout: .horizontal
+                                                )
                                                 
-                                            } else {
+                                                let alert = SCLAlertView(appearance: appearance)
+                                                _ = alert.addButton("Got it") {
+                                                    
+                                                    
+                                                    self.dismiss(animated: true, completion: nil)
+                                                    
+                                                    
+                                                }
                                                 
+                                                let icon = UIImage(named:"lg1")
                                                 
-                                                let Application: Dictionary<String, AnyObject> = ["SSNum": socialSecurityNum as AnyObject, "DriverFaceIDdownloadUrl": self.faceIDPhotoUrl as AnyObject, "DriverLicdownloadUrl": self.DriverLicdownloadUrl as AnyObject, "LicPlatedownloadUrl": self.LicPlatedownloadUrl as AnyObject, "CarRegistdownloadUrl": self.CarRegistdownloadUrl as AnyObject,"Timestamp": ServerValue.timestamp() as AnyObject, "userUID": userUID as AnyObject, "Car1downloadUrl": self.Car1downloadUrl as AnyObject, "Car2downloadUrl": self.Car2downloadUrl as AnyObject, "campus": campus as AnyObject, "email": email as AnyObject, "user_name": name as AnyObject, "phone": phone as AnyObject,"Selectedadd1Txt": Selectedadd1Txt as AnyObject, "Selectedadd2Txt": "nil" as AnyObject, "SelectedCityTxt": SelectedCityTxt as AnyObject, "SelectedStateTxt": SelectedStateTxt as AnyObject, "SelectedzipcodeTxt": SelectedzipcodeTxt as AnyObject, "DriverLics": DriverLicsFinal as AnyObject,"StateLics": StateLicsFinal as AnyObject]
+                                                _ = alert.showCustom("Congratulations!", subTitle: "You successfully submitted the application to become a driver for Campus Connect, we will process your application soon and reach back out to you by phone and email", color: UIColor.black, icon: icon!)
                                                 
-                                                
-                                                DataService.instance.mainDataBaseRef.child("Application_Request").child("New").child(userUID).setValue(Application)
-                                                DataService.instance.mainDataBaseRef.child("Application_Request").child("Total").child(userUID).setValue(Application)
                                                 
                                             }
-                                            
-                                            
-                                            SwiftLoader.hide()
-                                            
-                                            let appearance = SCLAlertView.SCLAppearance(
-                                                kTitleFont: UIFont(name: "HelveticaNeue", size: 20)!,
-                                                kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
-                                                kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
-                                                showCloseButton: false,
-                                                dynamicAnimatorActive: true,
-                                                buttonsLayout: .horizontal
-                                            )
-                                            
-                                            let alert = SCLAlertView(appearance: appearance)
-                                            _ = alert.addButton("Got it") {
-                                                
-                                                
-                                                self.dismiss(animated: true, completion: nil)
-                                                
-                                                
-                                            }
-                                            
-                                            let icon = UIImage(named:"lg1")
-                                            
-                                            _ = alert.showCustom("Congratulations!", subTitle: "You successfully submitted the application to become a driver for Campus Connect, we will process your application soon and reach back out to you by phone and email", color: UIColor.black, icon: icon!)
-                                            
                                             
                                         }
                                         
+                                        
                                     }
-                                    
                                     
                                 }
                                 
                             }
+                            
+      
+                            
                             
                             
                         }

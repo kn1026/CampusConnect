@@ -30,10 +30,10 @@ let Unidict = ["Plymouth State University": "@plymouth.edu",
     "Assumption": "@my.assumption.edu",
     "Worcester State University": "@worcester.edu",
     "University of Connecticut": "@uconn.edu",
-    "University of Rhode Island": "@my.uri.edu"]
+    "University of Rhode Island": "@my.uri.edu", "Campus-connect-test" : "Campus-connect-test"]
 
 
-let uniList = ["Assumption", "Champlain College", "Clark University", "Holy Cross", "Keene State College", "Plymouth State University", "UMass Amherst", "University of Connecticut", "University of New Hampshire", "University of Rhode Island", "University of Vermont", "WPI", "Worcester State University"]
+let uniList = ["Assumption", "Champlain College", "Clark University", "Holy Cross", "Keene State College", "Plymouth State University", "UMass Amherst", "University of Connecticut", "University of New Hampshire", "University of Rhode Island", "University of Vermont", "WPI", "Worcester State University", "Campus-connect-test"]
 
 
 let googleMap_Key = "AIzaSyAAYuBDXTubo_qcayPX6og_MrWq9-iM_KE"

@@ -106,10 +106,7 @@ class verifyEmailVC: UIViewController {
         Auth.auth().currentUser?.sendEmailVerification(completion: { (err) in
             if err != nil {
                 
-                
-                
-                
-                self.showErrorAlert("Oops !!!", msg: "Cannot send the email, please try again")
+                self.showErrorAlert("Oops !!!", msg: err.debugDescription)
                 
                 
                 

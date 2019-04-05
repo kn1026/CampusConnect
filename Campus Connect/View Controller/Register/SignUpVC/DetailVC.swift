@@ -69,9 +69,9 @@ class DetailVC: UIViewController {
         dateFormatter.locale = Locale(identifier: "en_US")
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeStyle = DateFormatter.Style.none
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         birthDayTxtView.text = dateFormatter.string(from: sender.date)
-        
-        
+
     }
     
     
@@ -81,6 +81,22 @@ class DetailVC: UIViewController {
         firstNameTxtView.becomeFirstResponder()
         
         
+    }
+    
+    func formattedDateFromString(dateString: String, withFormat format: String) -> String? {
+        
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "dd/MM/yyyy"
+        
+        if let date = inputFormatter.date(from: dateString) {
+            
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = format
+            
+            return outputFormatter.string(from: date)
+        }
+        
+        return nil
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -114,34 +130,28 @@ class DetailVC: UIViewController {
             
             let year = calendar.component(.year, from: date)
             
-            var isBirthday = false
+            
             var FinalBirthday = [String]()
             let testBirthdaylArr = Array(birthday)
             
             
             for i in testBirthdaylArr  {
                 
-                if isBirthday == false {
+                
+                if i == "-" {
                     
-                    if i == "," {
-                        
-                        isBirthday = true
-                        
-                    }
-                    
-                } else {
-                    
-                    let num = String(i)
-                    
-                    
-                    FinalBirthday.append(num)
+                    break
                     
                 }
+                
+                let num = String(i)       
+                FinalBirthday.append(num)
+
                 
             }
             
             
-            let result = FinalBirthday.dropFirst()
+            let result = FinalBirthday
             if let bornYear = Int(result.joined()) {
                 
                 

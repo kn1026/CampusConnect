@@ -107,14 +107,14 @@ extension shippingAddVC: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        return State.count
+        return AState.count
     }
     
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
         
-        return State[row]
+        return AState[row]
     }
     
     
@@ -123,7 +123,7 @@ extension shippingAddVC: UIPickerViewDelegate, UIPickerViewDataSource {
         
         
         
-        StateTxt.text = State[row]
+        StateTxt.text = AState[row]
         
     }
     
@@ -137,7 +137,7 @@ extension shippingAddVC: UIPickerViewDelegate, UIPickerViewDataSource {
             label = UILabel()
         }
         
-        label.text = State[row]
+        label.text = AState[row]
         label.textAlignment = .center
         return label
         

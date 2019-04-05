@@ -218,7 +218,7 @@ class searchController: UIViewController, UISearchBarDelegate, UITableViewDelega
             
             pickUpLocation = place.coordinate
             pickUpAddress = place.formattedAddress!
-            pickUp_add_Name = place.name
+            pickUp_add_Name = place.name!
             completed()
             
            
@@ -244,7 +244,7 @@ class searchController: UIViewController, UISearchBarDelegate, UITableViewDelega
             
             DestinationLocation = place.coordinate
             destinationAddress = place.formattedAddress!
-            placeName = place.name
+            placeName = place.name!
             
             completed()
             
@@ -305,8 +305,6 @@ class searchController: UIViewController, UISearchBarDelegate, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
         
         
         let place: searchModel
@@ -596,7 +594,7 @@ extension searchController: GMSAutocompleteFetcherDelegate {
                 
                 let PlaceInformation: Dictionary<String, AnyObject> = ["PlaceName": prediction.attributedPrimaryText.string as AnyObject, "PlaceAddress": prediction.attributedSecondaryText?.string as AnyObject, "PlaceID": id as AnyObject]
 
-                let PlaceData = searchModel(postKey: id!, searchModel: PlaceInformation)
+                let PlaceData = searchModel(postKey: id, searchModel: PlaceInformation)
                 self.placeList.append(PlaceData)
                 
                 
