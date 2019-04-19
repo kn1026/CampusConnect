@@ -757,8 +757,8 @@
 				6A5496FE205F6ED3006346D7 /* Sources */,
 				6A5496FF205F6ED3006346D7 /* Frameworks */,
 				6A549700205F6ED3006346D7 /* Resources */,
-				F6152FEFBB7377EC440E7B4A /* [CP] Embed Pods Frameworks */,
-				A60BD591DCE68887320AA9E0 /* [CP] Copy Pods Resources */,
+				D28F66ECBAA9385A575D899B /* [CP] Embed Pods Frameworks */,
+				BB82154CFD9CB3880EFFBCF2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -914,10 +914,12 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A60BD591DCE68887320AA9E0 /* [CP] Copy Pods Resources */ = {
+		BB82154CFD9CB3880EFFBCF2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Campus Connect/Pods-Campus Connect-resources.sh",
@@ -925,6 +927,8 @@
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
@@ -934,10 +938,12 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Campus Connect/Pods-Campus Connect-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6152FEFBB7377EC440E7B4A /* [CP] Embed Pods Frameworks */ = {
+		D28F66ECBAA9385A575D899B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Campus Connect/Pods-Campus Connect-frameworks.sh",
@@ -970,6 +976,8 @@
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSQS.framework",
@@ -1188,7 +1196,9 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1240,6 +1250,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1259,6 +1270,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Campus-Connect-LLC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = header.h;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 4.0;
@@ -1281,6 +1293,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Campus-Connect-LLC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = header.h;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 4.0;

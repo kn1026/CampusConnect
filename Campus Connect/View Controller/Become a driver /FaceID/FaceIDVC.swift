@@ -215,9 +215,7 @@ class FaceIDVC: UIViewController, UINavigationControllerDelegate {
         
         for face in faces as! [CIFaceFeature] {
             
-            print("Found bounds are \(face.bounds)")
-         
-            
+  
             if face.hasLeftEyePosition && face.hasRightEyePosition && face.hasMouthPosition && face.rightEyeClosed == false && face.leftEyeClosed == false {
                 return true
             } else {

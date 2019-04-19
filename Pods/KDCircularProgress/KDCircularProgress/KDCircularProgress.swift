@@ -1,3 +1,4 @@
+
 //
 //  KDCircularProgress.swift
 //  KDCircularProgress
@@ -83,7 +84,7 @@ public class KDCircularProgress: UIView, CAAnimationDelegate {
     public var progress: Double = 0 {
         didSet {
             let clampedProgress = Utility.clamp(value: progress, minMax: (0, 1))
-                angle = 360 * clampedProgress
+            angle = 360 * clampedProgress
         }
     }
     

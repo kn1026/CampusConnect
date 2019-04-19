@@ -2447,41 +2447,62 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                     
                                     self.queryForDriver() {
                                         
-                                        let currentDateTime = Date()
                                         
-                                        // initialize the date formatter and set the style
-                                        let formatter = DateFormatter()
-                                        formatter.timeStyle = .medium
-                                        formatter.dateStyle = .long
-                                        
-                                        // get the date time String from the date object
-                                        let result = formatter.string(from: currentDateTime)
-                                        let description = "Authorize payment for request ride from Campus Connect at \(result)"
-                                        
-                                        if chargedCardBrand == "Apple_pay" {
+                                        Database.database().reference().child("Campus-Connect").child("Test_Mode").observeSingleEvent(of: .value, with: { (TestData) in
                                             
-                                            
-                                            self.makeApple_pay(text: description)
-                                            
-                                            
-                                        } else {
-                                            
-                                            
-                                            let price = Double(finalPrice)
-                                            var roundedPrice = price?.roundTo(places: 2)
-                                            
-                                            roundedPrice = roundedPrice! * 100
-                                            
-                                            
-                                            self.makePayment(captured: false, price: roundedPrice!, text: description) {
+                                            if TestData.exists() {
                                                 
                                                 
+                                                self.capturedKey = "Test_Charged"
                                                 self.process_trip_request()
+                                                
+                                                
+                                            } else {
+                                                
+                                                
+                                                let currentDateTime = Date()
+                                                
+                                                // initialize the date formatter and set the style
+                                                let formatter = DateFormatter()
+                                                formatter.timeStyle = .medium
+                                                formatter.dateStyle = .long
+                                                
+                                                // get the date time String from the date object
+                                                let result = formatter.string(from: currentDateTime)
+                                                let description = "Authorize payment for request ride from Campus Connect at \(result)"
+                                                
+                                                if chargedCardBrand == "Apple_pay" {
+                                                    
+                                                    
+                                                    self.makeApple_pay(text: description)
+                                                    
+                                                    
+                                                } else {
+                                                    
+                                                    
+                                                    let price = Double(finalPrice)
+                                                    var roundedPrice = price?.roundTo(places: 2)
+                                                    
+                                                    roundedPrice = roundedPrice! * 100
+                                                    
+                                                    
+                                                    self.makePayment(captured: false, price: roundedPrice!, text: description) {
+                                                        
+                                                        
+                                                        self.process_trip_request()
+                                                        
+                                                    }
+                                                    
+                                                    
+                                                }
                                                 
                                             }
                                             
-                                            
-                                        }
+                                        })
+                                        
+                                        
+                                        
+                                        
                                         
                                     }
                                     
