@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class CampusVC: UIViewController {
     
@@ -16,6 +17,8 @@ class CampusVC: UIViewController {
     
     var phoneNumber: String?
     var campus: String?
+    
+    var campusList = [CampusModel]()
 
     @IBOutlet weak var campusTxtLbl: UITextField!
     
@@ -26,7 +29,9 @@ class CampusVC: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        
+        for i in campusList {
+            print(i.School_Name)
+        }
         
     }
     
@@ -34,11 +39,15 @@ class CampusVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        
         campusTxtLbl.becomeFirstResponder()
         createDayPicker()
         
         
+        
     }
+    
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -52,6 +61,7 @@ class CampusVC: UIViewController {
                 destination.name = self.name
                 destination.phoneNumber = self.phoneNumber
                 destination.campus = campus
+                destination.campusList = campusList
             }
         }
         
@@ -113,6 +123,9 @@ class CampusVC: UIViewController {
         
     }
     
+    
+    
+    
 }
 
 extension CampusVC: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -126,14 +139,16 @@ extension CampusVC: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        return uniList.count
+        
+        
+        return campusList.count
     }
     
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
+        return campusList[row].School_Name
         
-        return uniList[row]
     }
     
     
@@ -142,11 +157,15 @@ extension CampusVC: UIPickerViewDelegate, UIPickerViewDataSource {
         
         
         
-        campusTxtLbl.text = uniList[row]
+        campusTxtLbl.text = self.campusList[row].School_Name
         uniName = campusTxtLbl.text
+        
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        
         var label: UILabel!
         
         
@@ -156,7 +175,7 @@ extension CampusVC: UIPickerViewDelegate, UIPickerViewDataSource {
             label = UILabel()
         }
         
-        label.text = uniList[row]
+        label.text = self.campusList[row].School_Name
         uniName = campusTxtLbl.text
         label.textAlignment = .center
         return label

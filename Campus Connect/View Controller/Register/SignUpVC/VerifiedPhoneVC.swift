@@ -26,6 +26,8 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
     
     var verification: Verification!
     
+    var campusList = [CampusModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,7 +50,60 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
         
         
     }
-//yRHyObo3WvXfXk1QVro8x8duwks2
+    
+    
+    func getCampus(completed: @escaping DownloadComplete) {
+        
+        
+        DataService.instance.mainDataBaseRef.child("Available_Campus").observeSingleEvent(of: .value, with: { (schoolData) in
+            
+            
+            
+            if schoolData.exists() {
+                
+                if let snap = schoolData.children.allObjects as? [DataSnapshot] {
+                    
+                    for item in snap {
+                        if let postDict = item.value as? Dictionary<String, Any> {
+                            
+                            
+                            var dict = postDict
+                            dict.updateValue(item.key, forKey: "School_Name")
+                            
+                            let SchoolDataResult = CampusModel(postKey: schoolData.key, School_model: dict)
+                            
+                            self.campusList.append(SchoolDataResult)
+                            
+                            
+                            
+                        }
+                        
+                    }
+                    
+                    completed()
+                    
+                }
+                
+                
+                
+            } else {
+                
+                SwiftLoader.hide()
+                
+                self.showErrorAlert("Ops", msg: "Can't get campus data, please check your connection and try again")
+                
+            }
+            
+            
+            
+            
+            
+        })
+        
+        
+        
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -96,15 +151,9 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
                 
                 
             }
-            
-            
-            
-            
+               
 
         }
-        
-        
-        
         
         
     }
@@ -217,8 +266,24 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
                                                                     
                                                                     
                                                                     SwiftLoader.hide()
-                                                                    self.performSegue(withIdentifier:
-                                                                        "moveToMapVC1", sender: nil)
+                                                                    
+                                                                    let userDefaults = UserDefaults.standard
+                                                                    
+                                                                    
+                                                                    if userDefaults.bool(forKey: "hasRunIntro") == false {
+                                                                        
+                                                                        
+                                                                        // Run code here for the first launch
+                                                                        self.performSegue(withIdentifier: "moveToIntroVC2", sender: nil)
+                                                                        
+                                                                        
+                                                                    } else {
+                                                                        
+                                                                        
+                                                                        self.performSegue(withIdentifier: "moveToMapVC1", sender: nil)
+                                                                        
+                                                                        
+                                                                    }
                                                                     
                                                                 }
                                                                 
@@ -236,8 +301,25 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
                                                             
                                                             
                                                             SwiftLoader.hide()
-                                                            self.performSegue(withIdentifier:
-                                                                "moveToMapVC1", sender: nil)
+                                                            
+                                                            
+                                                            let userDefaults = UserDefaults.standard
+                                                            
+                                                            
+                                                            if userDefaults.bool(forKey: "hasRunIntro") == false {
+                                                                
+                                                                
+                                                                // Run code here for the first launch
+                                                                self.performSegue(withIdentifier: "moveToIntroVC2", sender: nil)
+                                                                
+                                                                
+                                                            } else {
+                                                                
+                                                                
+                                                                self.performSegue(withIdentifier: "moveToMapVC1", sender: nil)
+                                                                
+                                                                
+                                                            }
                                                             
                                                             
                                                         }
@@ -287,11 +369,21 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
                             
                         } else {
                             
+
+                    
+                    
+                            self.getCampus() {
+                                
+                                SwiftLoader.hide()
+                                self.performSegue(withIdentifier: "MoveToChooseCampusVC", sender: nil)
+                                
+                            }
+                    
+                    
+                    
                             
-                            
-                            SwiftLoader.hide()
-                            self.performSegue(withIdentifier:
-                                "MoveToChooseCampusVC", sender: nil)
+                    
+                    
                             
                             
                         }
@@ -391,6 +483,7 @@ class VerifiedPhoneVC: UIViewController, UITextFieldDelegate {
                 destination.birthday = self.birthday
                 destination.name = self.name
                 destination.phoneNumber = self.phoneNumber
+                destination.campusList = self.campusList
             }
         }
         

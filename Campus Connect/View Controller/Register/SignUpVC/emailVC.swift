@@ -21,6 +21,8 @@ class emailVC: UIViewController {
     var email: String?
     var campus: String?
     
+    var campusList = [CampusModel]()
+    
     
     @IBOutlet weak var emailNickName: UITextField!
     
@@ -33,22 +35,26 @@ class emailVC: UIViewController {
         
         
         
-        if let uni = uniName {
+        for i in campusList {
             
-            uniDomainTxt.text = Unidict[uni]
-            emailNickName.becomeFirstResponder()
-            emailNickName.borderStyle = .none
-            let border = CALayer()
-            let width = CGFloat(2.0)
-            border.borderColor = UIColor.white.cgColor
-            border.frame = CGRect(x: 0, y: emailNickName.frame.size.height - width, width:  emailNickName.frame.size.width, height: emailNickName.frame.size.height)
-            
-            border.borderWidth = width
-            emailNickName.layer.addSublayer(border)
-            emailNickName.layer.masksToBounds = true
-            
-            
+            if campus == i.School_Name {
+                uniDomainTxt.text = i.Domain
+                emailNickName.becomeFirstResponder()
+                emailNickName.borderStyle = .none
+                let border = CALayer()
+                let width = CGFloat(2.0)
+                border.borderColor = UIColor.white.cgColor
+                border.frame = CGRect(x: 0, y: emailNickName.frame.size.height - width, width:  emailNickName.frame.size.width, height: emailNickName.frame.size.height)
+                
+                border.borderWidth = width
+                emailNickName.layer.addSublayer(border)
+                emailNickName.layer.masksToBounds = true
+                
+                break
+            }
         }
+        
+
         
         
     
@@ -95,21 +101,7 @@ class emailVC: UIViewController {
                 
                 
                 
-                if uniDomainTxt.text != "Campus-connect-test"  {
-                    
-                    finalEmail = email + Unidict[uniName!]!
-                    
-                } else {
-                    
-                    if email.contains("@") && email.contains(".") {
-                        finalEmail = email
-                    } else {
-                        self.showErrorAlert("Ops !!!", msg: "Please use your valid email for test account")
-                        return
-                    }
-                    
-                    
-                }
+                finalEmail = email + uniDomainTxt.text!
                 
                 
                 self.email = finalEmail

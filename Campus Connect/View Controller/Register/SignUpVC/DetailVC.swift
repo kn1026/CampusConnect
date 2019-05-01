@@ -58,7 +58,7 @@ class DetailVC: UIViewController {
         
         let datePickerView: UIDatePicker = UIDatePicker()
         datePickerView.datePickerMode = UIDatePickerMode.date
-        datePickerView.maximumDate = Date()
+        datePickerView.maximumDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())
         birthDayTxtView.inputView = datePickerView
         datePickerView.addTarget(self, action: #selector(DetailVC.datePickerValueChanged), for: UIControlEvents.valueChanged)
     }

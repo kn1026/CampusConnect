@@ -9,12 +9,6 @@
 import Foundation
 import CoreLocation
 
-/*
- 
- ["Trip_key": -L9MJ9iF451Mmz7TYqjc, "PickUp_Lat": 43.1341231, "Destination_Lat": 43.0907205, "pickUp_name": khoi nguyen, "destinationAddress": 1801 Woodbury Ave, Portsmouth, NH 03801, USA, "price": 10.5, "chargedCardID": card_1CDShzJipU4QHqNkLLQovWlr, "Phone": +16032853880, "Timestamp": 1522957069259, "Destination_Lon": -70.79029079999999, "capturedKey": ch_1CDdu4JipU4QHqNkDzuET7fu, "pickUpEmail": kn1026@wildcats.unh.edu, "PickUp_Lon": -70.93496619999999, "pickUpAddress": 33 Academic Way, Durham, NH 03824, USA]
- 
- 
- */
 
 
 class Rider_trip_model {

@@ -32,6 +32,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     var Driver_Tip_name: String?
     
+    @IBOutlet weak var introView: UIView!
     @IBOutlet weak var statusLbl: UILabel!
     @IBOutlet weak var bookStack: UIStackView!
     @IBOutlet weak var NoneDollarTip: UIButton!
@@ -343,7 +344,13 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         //checkDriverApplication()
         
         Messaging.messaging().subscribe(toTopic: "Campus Connect") { error in
-            print("Subscribed to cc topic")
+            
+            if error != nil {
+                print(error.debugDescription)
+            } else {
+                print("Subscribed to cc topic")
+            }
+            
         }
         
     }
@@ -755,7 +762,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             } else {
                 
                 
-                print("Rated all already")
+                //print("Rated all already")
                 
                 
             }
@@ -779,16 +786,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
-        
-        
-        
-        
-        guard Auth.auth().currentUser != nil else {
-            
-            self.performSegue(withIdentifier: "GoBackToSignIn", sender: nil)
-            return
-        }
-        
+    
         
         if (try? InformationStorage?.object(ofType: String.self, forKey: "phone")) == nil{
             
@@ -811,6 +809,8 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
             
             isFirst = true
+            
+            
         }
         
         
@@ -835,83 +835,26 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         loadMyRate()
         
         
-        // Richard
+        delay(1.0) { () -> () in
+            
+            
+            
+            self.introView.isHidden = true
+            
+        }
         
-        // I have updated animatewithpath() function.
         
-        
-        /*
-        
-        var latlng = CLLocationCoordinate2DMake(30.7333, 76.7794);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73340,76.77940);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73351,76.77943);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73359,76.77949);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73364,76.77956);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73367,76.77969);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73365,76.77984);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73359,76.77995);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73352,76.78001);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73342,76.78004);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73330,76.78002);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73325,76.77999);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73291,76.78022);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73226,76.78080);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73170,76.78130);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.73051,76.78231);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72821,76.78444);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72797,76.78468);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72790,76.78478);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72791,76.78481);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72792,76.78488);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72789,76.78501);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72783,76.78510);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72776,76.78516);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72764,76.78519);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72752,76.78515);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72746,76.78510);
-        locationarray.add(latlng);
-        latlng = CLLocationCoordinate2DMake(30.72718,76.78529);
-        locationarray.add(latlng);
-        
-        let old = locationarray.object(at: 0) as! CLLocationCoordinate2D;
-        let new = locationarray.object(at: 1) as! CLLocationCoordinate2D;
-        showanimation(oldcoord: old, newcoord: new)
-        
-        previouscount = 1;
-        
- 
- */
+
         
         
     }
     
     
+    @IBAction func DashboardBtnPressed(_ sender: Any) {
+        
+        self.dismiss(animated: true, completion: nil)
+        
+    }
     
     
     
@@ -950,28 +893,14 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 }
                 
                 if self.bookCarView.isHidden != true {
-                    DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).observeSingleEvent(of: .value, with: { (data) in
+                    
+                    
+                    if self.statusLbl.text != "Out of range" {
                         
-                        if data.exists() {
-                            
-                            self.bookStack.isHidden = true
-                            self.statusLbl.isHidden = false
-                            self.statusLbl.text = "Wheelchair not available"
-                            
-                        } else{
-                            
-                            if self.statusLbl.text != "Out of range" {
-                                
-                                self.checkForDriverAround()
-                                
-                            }
-                            
-                            
-                            
-                        }
+                        self.checkForDriverAround()
                         
-                        
-                    })
+                    }
+                    
                     
                     
                 }
@@ -1223,7 +1152,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                         
                     } else {
                         
-                        print("Not in any progress")
+                        //print("Not in any progress")
                         
                     }
                     
@@ -1442,8 +1371,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     
     func drawDirection(pickup: CLLocationCoordinate2D, destination: CLLocationCoordinate2D, completed: @escaping DownloadComplete) {
         
-        
-        
         let origin = "\(pickup.latitude),\(pickup.longitude)"
         let destinations = "\(destination.latitude),\(destination.longitude)"
         let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destinations)&mode=driving&sensor=true&key=\(googleMap_Key)"
@@ -1483,8 +1410,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                     var FinalDistance = [String]()
                                     let testDistancelArr = Array(val)
                                     
-                                    
-                                    
                                     for i in testDistancelArr  {
                                         
                                         if isDistance == false {
@@ -1498,14 +1423,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                                 FinalDistance.append(num)
                                                 
                                             }
-                                            
-                                            
                                         }
                                         
                                     }
-                                    
-                                    
-                                    
                                     
                                     let distance = String(FinalDistance.joined())
                                     finalDistance = distance
@@ -1515,61 +1435,42 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                         if result > 10 {
                                             
                                           self.carPrice.text = "$0.00"
-                                        self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $0.00"
+                                            self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $0.00"
                                             self.bookStack.isHidden = true
                                             self.statusLbl.isHidden = false
                                             self.statusLbl.text = "Out of range"
                                             
                                         } else {
                                             
-                                            DataService.instance.mainDataBaseRef.child("Wheel_chair_request").child(userUID).observeSingleEvent(of: .value, with: { (data) in
-                                                
-                                                if data.exists() {
-                                                    
-                                                    self.bookStack.isHidden = true
-                                                    self.statusLbl.isHidden = false
-                                                    self.statusLbl.text = "Wheelchair not available"
-                                                    
-                                                    
-                                                } else{
-                                                    
-                                                    self.checkForDriverAround()
-                                                    
-                                                    if result <= Float(5.0) {
-                                                        
-                                                        
-                                                        
-                                                        finalPrice = basePrice
-                                                        
-                                                        self.carPrice.text = "$\(finalPrice)"
-                                                        self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $\(finalPrice)"
-                                                        
-                                                        
-                                                    } else {
-                                                        
-                                                        let base = Float(basePrice)
-                                                        self.OnCampusFareLbl.text = ". . . . . . . . . . . . . . . $\(basePrice)"
-
-                                                        let change = result - 5.0
-                                                        var final = base! + change
-                                                        final = round(100*final)/100
-                                                        
-                                                        finalPrice = String(final)
-                                                        
-                                                        
-                                                        
-                                                        self.carPrice.text = "$\(finalPrice)"
-                                                        
-                                                        
-                                                        
-                                                        
-                                                        
-                                                    }
-                                                    
-                                                }
+                                            self.checkForDriverAround()
+                                            
+                                            if result <= Float(5.0) {
+      
+                                                finalPrice = basePrice
+                                                let price = Double(finalPrice)
                                                 
                                                 
-                                            })
+                                                self.carPrice.text = "$\(String(format:"%.2f", price!))"
+                                                self.OnCampusFareLbl.text = ". . . . . . . . . . . . . $\(finalPrice)"
+                                                self.OffCampusFareLbl.text = ". . . . . . . . . . . . . $0.00"
+                                                
+                                                
+                                            } else {
+                                                
+                                                let base = Float(basePrice)
+                                                self.OnCampusFareLbl.text = ". . . . . . . . . . . . . $\(String(format:"%.2f", base!))"
+                                                self.OffCampusFareLbl.text = ". . . . . . . . . . . . . $\(0.25)"
+                                                
+                                                let change = (result - 5.0) * 0.25
+                                                var final = base! + change
+                                                final = round(100*final)/100
+                                                
+                                                finalPrice = String(final)
+                
+                                                self.carPrice.text = "$\(String(format:"%.2f", final))"
+                                                
+                                                
+                                            }
                                             
                                             
                                             
@@ -1612,9 +1513,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 
             }
             
-            
-            
-            
+
             
             self.marker.position = pickup
             self.marker.icon = nil
@@ -1622,12 +1521,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
             self.marker.map = self.mapView
             self.marker.isTappable = false
-            
-            
-            
-            
-            
-            
+
             
             self.marker.isTappable = false
             
@@ -1673,13 +1567,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         self.pulsator.start()
         
-        
-        
     }
     
-    
-    
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         manager.activityType = .automotiveNavigation
@@ -1708,7 +1598,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 rate_driver_uid = tripDriverReuslt.UID
                 locationManager.stopUpdatingLocation()
                 updateUIForRating()
+            
                 DataService.instance.mainDataBaseRef.child("On_Trip_arrived").child("Rider").child(userUID).removeValue()
+                
                 centerMapOnUserLocation()
                 
             }
@@ -1797,7 +1689,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         let loc = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
         
-        print(coordinate.latitude, coordinate.longitude)
+     
         let query = geoFire.query(at: loc, withRadius: 10)
         checkPriceAgainWhenSearch(query: query)
         
@@ -2447,62 +2339,42 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                                     
                                     self.queryForDriver() {
                                         
+                                        let currentDateTime = Date()
                                         
-                                        Database.database().reference().child("Campus-Connect").child("Test_Mode").observeSingleEvent(of: .value, with: { (TestData) in
+                                        // initialize the date formatter and set the style
+                                        let formatter = DateFormatter()
+                                        formatter.timeStyle = .medium
+                                        formatter.dateStyle = .long
+                                        
+                                        // get the date time String from the date object
+                                        let result = formatter.string(from: currentDateTime)
+                                        let description = "Authorize payment for request ride from Campus Connect at \(result)"
+                                        
+                                        if chargedCardBrand == "Apple_pay" {
                                             
-                                            if TestData.exists() {
+                                            
+                                            self.makeApple_pay(text: description)
+                                            
+                                            
+                                        } else {
+                                            
+                                            
+                                            let price = Double(finalPrice)
+                                            
+                                            var roundedPrice = price?.roundTo(places: 2)
+                                            
+                                            roundedPrice = roundedPrice! * 100
+                                            
+                                            
+                                            self.makePayment(captured: false, price: roundedPrice!, text: description) {
                                                 
                                                 
-                                                self.capturedKey = "Test_Charged"
                                                 self.process_trip_request()
-                                                
-                                                
-                                            } else {
-                                                
-                                                
-                                                let currentDateTime = Date()
-                                                
-                                                // initialize the date formatter and set the style
-                                                let formatter = DateFormatter()
-                                                formatter.timeStyle = .medium
-                                                formatter.dateStyle = .long
-                                                
-                                                // get the date time String from the date object
-                                                let result = formatter.string(from: currentDateTime)
-                                                let description = "Authorize payment for request ride from Campus Connect at \(result)"
-                                                
-                                                if chargedCardBrand == "Apple_pay" {
-                                                    
-                                                    
-                                                    self.makeApple_pay(text: description)
-                                                    
-                                                    
-                                                } else {
-                                                    
-                                                    
-                                                    let price = Double(finalPrice)
-                                                    var roundedPrice = price?.roundTo(places: 2)
-                                                    
-                                                    roundedPrice = roundedPrice! * 100
-                                                    
-                                                    
-                                                    self.makePayment(captured: false, price: roundedPrice!, text: description) {
-                                                        
-                                                        
-                                                        self.process_trip_request()
-                                                        
-                                                    }
-                                                    
-                                                    
-                                                }
                                                 
                                             }
                                             
-                                        })
-                                        
-                                        
-                                        
-                                        
+                                            
+                                        }
                                         
                                     }
                                     
@@ -2555,6 +2427,8 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
         
         
+        
+        
     }
     
     
@@ -2592,6 +2466,9 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             }
             
         }
+        
+        
+        
         
     }
     
@@ -2652,6 +2529,8 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                         
                         //self.process_trip_request()
                         //self.listRecentDriver.append(recentDriverUID)
+                        
+                        print("Cancel")
                         
                         self.queryForDriver() {
                             
@@ -2979,8 +2858,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                 self.driverMarker.tracksViewChanges = true
                 self.driverMarker.map = self.mapView
                 
-                print("Updated")
-                
                 
                 
             }
@@ -3151,8 +3028,22 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             self.marker.appearAnimation = .pop
             myView.addSubview(markerView)
             
+            var IconImages: UIImage!
             
-            let IconImages = resizeImage(image: UIImage(named: "black")!, targetSize: CGSize(width: 50.0, height: 50.0))
+            if let img = self.requestDriverImg.image {
+                
+   
+                IconImages = resizeImage(image: img, targetSize: CGSize(width: 50.0, height: 50.0))
+                //self.driverMarker.layer.cornerRadius = self.driverMarker.layer.frame.height / 2
+               // self.driverMarker.layer.masksToBounds = true
+               // self.driverMarker.layer.borderWidth = 5
+               // self.driverMarker.layer.borderColor = UIColor.yellow.cgColor
+                
+            } else {
+                
+                IconImages = resizeImage(image: UIImage(named: "black")!, targetSize: CGSize(width: 50.0, height: 50.0))
+            }
+            
             self.driverMarker.position = origins
             self.driverMarker.icon = IconImages
             self.driverMarker.snippet = self.eta
@@ -3213,10 +3104,10 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                     case .success(let json):
                         
                         
-                        if let dict = json as? [String: AnyObject] {
+                        if json is [String: AnyObject] {
                             
                             
-                            print(dict)
+                            //print(dict)
                             
                         }
                         
@@ -3593,9 +3484,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                         
                     }
                     
-                    
-                    self.check_if_notice_needed()
-                    
                     self.showErrorAlert("Oops!", msg: "All drivers are busy with other riders right now, please try again")
                     
                 }
@@ -3627,9 +3515,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
                     DataService.instance.mainDataBaseRef.child("Rider_Observe_Trip").child(userUID).removeObserver(withHandle: self.Rider_handle!)
                     
                 }
-                
-                
-                self.check_if_notice_needed()
                 
                 self.showErrorAlert("Oops!", msg: "All drivers are busy with other riders right now, please try again")
                 
@@ -3667,7 +3552,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
         } else {
             
-            print("Nil")
+            //print("Nil")
             
         }
         
@@ -3909,7 +3794,24 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         
     }
     
+    @IBAction func share2BtnPressed(_ sender: Any) {
+        
+        
+        shareFreeCode()
+        
+        
+    }
     @IBAction func shareBtnPressed(_ sender: Any) {
+        
+        
+        
+        shareFreeCode()
+        
+        
+    }
+    
+    
+    func shareFreeCode() {
         
         if let name = try? InformationStorage?.object(ofType: String.self, forKey: "user_name") {
             
@@ -3929,12 +3831,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             }
             
             
-            
-            
-            
         }
-        
-        
         
         
     }

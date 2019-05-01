@@ -487,8 +487,9 @@ class becomeADriverVC: UIViewController, ZSWTappableLabelTapDelegate {
         
         
         
-        sheet.addAction(oke)
+        
         sheet.addAction(cancel)
+        sheet.addAction(oke)
         present(sheet, animated: true, completion: nil)
         
     }

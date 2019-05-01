@@ -34,7 +34,9 @@ class HistoryCell: UITableViewCell {
             progressLbl.textColor = UIColor.red
             
         }
-        moneyLbl.text = "$\(info.price!)"
+        
+        
+        moneyLbl.text = "$\(String(format:"%.2f", info.price!))"
         
         let time = info.Timestamp as? TimeInterval
         let date = Date(timeIntervalSince1970: time!/1000)

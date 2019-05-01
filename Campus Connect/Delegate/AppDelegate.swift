@@ -190,6 +190,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         
         DataService.instance.mainDataBaseRef.child("Status").child((Auth.auth().currentUser?.uid)!).setValue(["Online": 0])
         
+        
         backgroundMode = true
     }
 
@@ -204,6 +205,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         
         
         DataService.instance.mainDataBaseRef.child("Status").child((Auth.auth().currentUser?.uid)!).setValue(["Online": 1])
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         backgroundMode = false
         

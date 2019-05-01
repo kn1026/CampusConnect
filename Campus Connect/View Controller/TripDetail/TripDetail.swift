@@ -71,7 +71,7 @@ class TripDetail: UIViewController {
         
 
         // Do any additional setup after loading the view.
-        /*
+        
          
         
         let times = time as? TimeInterval
@@ -106,7 +106,7 @@ class TripDetail: UIViewController {
             progressLbl.textColor = UIColor.red
             
         }
-        priceLbl.text = "$\(self.price!)"
+        priceLbl.text = "$\(String(format:"%.2f", self.price!))"
         last4DigitsLbl.text = " •••• \(self.last4Digits!)"
         brandCard.image = UIImage(named: self.brandCards!)
         pickUpLbl.text = self.pickUpName
@@ -120,7 +120,7 @@ class TripDetail: UIViewController {
         TipLbl.text = "Leave tip for \(fullNameArr![0].firstUppercased)"
         loadDriverImg()
         
- */
+ 
     }
     
     @IBAction func NoneDollarTip(_ sender: Any) {
@@ -341,7 +341,7 @@ class TripDetail: UIViewController {
                         
                         self.blurView.isHidden = true
                         self.tipView.isHidden = true
-                        
+                        SwiftLoader.hide()
                     }
                     
                     
@@ -353,6 +353,7 @@ class TripDetail: UIViewController {
                     
                     self.blurView.isHidden = true
                     self.tipView.isHidden = true
+                    SwiftLoader.hide()
                     
                     self.showErrorAlert("Oops !!!", msg: "Due to some unknown errors, we can't completely process your transaction. Please contact us to solve the issue")
                     

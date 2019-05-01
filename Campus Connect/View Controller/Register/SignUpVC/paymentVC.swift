@@ -252,7 +252,7 @@ class paymentVC: UIViewController, STPPaymentCardTextFieldDelegate, CardIOPaymen
                                         
                                         
                                             SwiftLoader.hide()
-                                            self.performSegue(withIdentifier: "moveToMapVC", sender: nil)
+                                            self.performSegue(withIdentifier: "moveToIntroVC1", sender: nil)
                                             
                                             
                                         
@@ -387,7 +387,7 @@ class paymentVC: UIViewController, STPPaymentCardTextFieldDelegate, CardIOPaymen
                                                                            
                                                                             
                                                                         SwiftLoader.hide()
-                                                                        self.performSegue(withIdentifier: "moveToMapVC", sender: nil)
+                                                                        self.performSegue(withIdentifier: "moveToIntroVC1", sender: nil)
                                                                         
                                                                     }
                                                                     
