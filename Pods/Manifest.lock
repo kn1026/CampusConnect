@@ -2,38 +2,35 @@ PODS:
   - Alamofire (4.8.2)
   - AlamofireImage (3.5.2):
     - Alamofire (~> 4.8)
-  - AWSCore (2.3.6)
-  - AWSSQS (2.3.6):
-    - AWSCore (= 2.3.6)
   - Cache (4.2.0)
   - CardIO (5.4.1)
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - Device (3.0.3)
   - Fabric (1.7.13)
-  - Firebase (5.20.1):
-    - Firebase/Core (= 5.20.1)
-  - Firebase/Auth (5.20.1):
+  - Firebase (5.20.2):
+    - Firebase/Core (= 5.20.2)
+  - Firebase/Auth (5.20.2):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.4.2)
-  - Firebase/Core (5.20.1):
+  - Firebase/Core (5.20.2):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 5.8.0)
-  - Firebase/CoreOnly (5.20.1):
+    - FirebaseAnalytics (= 5.8.1)
+  - Firebase/CoreOnly (5.20.2):
     - FirebaseCore (= 5.4.1)
-  - Firebase/Database (5.20.1):
+  - Firebase/Database (5.20.2):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.1.1)
-  - Firebase/Messaging (5.20.1):
+  - Firebase/Messaging (5.20.2):
     - Firebase/CoreOnly
     - FirebaseMessaging (= 3.5.0)
-  - Firebase/Storage (5.20.1):
+  - Firebase/Storage (5.20.2):
     - Firebase/CoreOnly
     - FirebaseStorage (= 3.1.1)
-  - FirebaseAnalytics (5.8.0):
+  - FirebaseAnalytics (5.8.1):
     - FirebaseCore (~> 5.4)
     - FirebaseInstanceID (~> 3.8)
-    - GoogleAppMeasurement (= 5.8.0)
+    - GoogleAppMeasurement (= 5.8.1)
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
     - GoogleUtilities/Network (~> 5.2)
@@ -69,47 +66,44 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 5.2)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - GeoFire (3.0.0):
     - Firebase/Database (~> 5.0)
-  - GoogleAppMeasurement (5.8.0):
+  - GoogleAppMeasurement (5.8.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
     - GoogleUtilities/Network (~> 5.2)
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - GoogleMaps (3.0.3):
-    - GoogleMaps/Maps (= 3.0.3)
-  - GoogleMaps/Base (3.0.3)
-  - GoogleMaps/Maps (3.0.3):
+  - GoogleMaps (3.1.0):
+    - GoogleMaps/Maps (= 3.1.0)
+  - GoogleMaps/Base (3.1.0)
+  - GoogleMaps/Maps (3.1.0):
     - GoogleMaps/Base
-  - GooglePlaces (3.0.3):
-    - GoogleMaps/Base (= 3.0.3)
-  - GoogleUtilities/AppDelegateSwizzler (5.5.0):
+  - GooglePlaces (3.1.0):
+    - GoogleMaps/Base (= 3.1.0)
+  - GoogleUtilities/AppDelegateSwizzler (5.8.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (5.5.0)
-  - GoogleUtilities/Logger (5.5.0):
+  - GoogleUtilities/Environment (5.8.0)
+  - GoogleUtilities/Logger (5.8.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (5.5.0):
+  - GoogleUtilities/MethodSwizzler (5.8.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (5.5.0):
+  - GoogleUtilities/Network (5.8.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (5.5.0)"
-  - GoogleUtilities/Reachability (5.5.0):
+  - "GoogleUtilities/NSData+zlib (5.8.0)"
+  - GoogleUtilities/Reachability (5.8.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (5.5.0):
+  - GoogleUtilities/UserDefaults (5.8.0):
     - GoogleUtilities/Logger
   - GPUImage (0.1.7)
   - GTMSessionFetcher/Core (1.2.1)
   - IGRPhotoTweaks (1.0.7)
   - JDropDownAlert (1.3.0)
-  - KDCircularProgress (1.5.2)
+  - KDCircularProgress (1.5.4)
   - leveldb-library (1.20)
   - MGSwipeTableCell (1.6.8)
   - nanopb (0.3.901):
@@ -119,19 +113,13 @@ PODS:
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
   - Pulsator (0.5.3)
-  - Reachability (3.1.1)
   - SCLAlertView (0.8)
   - SidebarOverlay (4.2.2)
   - SinchVerification-Swift (2.0.6)
-  - Stripe (15.0.0)
+  - Stripe (15.0.1)
   - SwiftOCR (1.1):
     - GPUImage
-  - SwiftyJSON (4.3.0)
-  - ZendriveSDK (5.4.3):
-    - AWSCore (~> 2.3.6)
-    - AWSSQS (~> 2.3.6)
-    - FMDB (~> 2.5)
-    - Reachability (~> 3.1.1)
+  - SwiftyJSON (5.0.0)
   - ZSWTaggedString/Core (4.1)
   - ZSWTaggedString/Swift (4.1):
     - ZSWTaggedString/Core
@@ -164,7 +152,6 @@ DEPENDENCIES:
   - Stripe
   - SwiftOCR
   - SwiftyJSON
-  - ZendriveSDK (from `https://bitbucket.org/zendrive-root/zendrive_cocoapod.git`, tag `5.4.3`)
   - ZSWTaggedString/Swift (~> 4.0)
   - ZSWTappableLabel (~> 2.0)
 
@@ -172,8 +159,6 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
-    - AWSCore
-    - AWSSQS
     - Cache
     - CardIO
     - Crashlytics
@@ -189,7 +174,6 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseStorage
-    - FMDB
     - GeoFire
     - GoogleAppMeasurement
     - GoogleMaps
@@ -205,7 +189,6 @@ SPEC REPOS:
     - nanopb
     - Protobuf
     - Pulsator
-    - Reachability
     - SCLAlertView
     - SidebarOverlay
     - SinchVerification-Swift
@@ -215,28 +198,16 @@ SPEC REPOS:
     - ZSWTaggedString
     - ZSWTappableLabel
 
-EXTERNAL SOURCES:
-  ZendriveSDK:
-    :git: https://bitbucket.org/zendrive-root/zendrive_cocoapod.git
-    :tag: 5.4.3
-
-CHECKOUT OPTIONS:
-  ZendriveSDK:
-    :git: https://bitbucket.org/zendrive-root/zendrive_cocoapod.git
-    :tag: 5.4.3
-
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
-  AWSCore: 917d84b32974136194a905b98c0ae25c9f3350b8
-  AWSSQS: aa53b836c21a10611120e8bf361feef54fd73ae1
   Cache: f28f8dd64b632155aabf9b3906b036a659048251
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Device: 9a5264ee4e0f392e7153d2c46b10c8df46b7aad2
   Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
-  Firebase: 2f5235e62f141cb86181c3af0dfe4509706351ac
-  FirebaseAnalytics: fd72a26bf8dac84cefba2f0864366f718555a5b0
+  Firebase: 0c8cf33f266410c61ab3e2265cfa412200351d9c
+  FirebaseAnalytics: ece1aa57a4f43c64d53a648b5a5e05151aae947b
   FirebaseAnalyticsInterop: efbe45c8385ec626e29f9525e5ebd38520dfb6c1
   FirebaseAuth: dd7bbf03a5aee0eafb3a1aee4d2812bd74bac890
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
@@ -245,33 +216,30 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: a122b0c258720cf250551bb2bedf48c699f80d90
   FirebaseMessaging: 4235f949ce1c4e827aeb19705ba5c53f9b85aa10
   FirebaseStorage: 6162ef4322502b818d9de0ec552f5226d283de43
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GeoFire: e3ae6f4be3f2466c3467ef6c1c203db3af935c59
-  GoogleAppMeasurement: 1624046ab1bcc5e170061a56ef5679000b079c8e
-  GoogleMaps: fd5c9fa58871781b9fb94d4936f19c69fe60ce32
-  GooglePlaces: f09e76993c9c3ee4af8f4f7f535bb94d6aa3b649
-  GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
+  GoogleAppMeasurement: ffe513e90551844a739e7bcbb1d2aca1c28a4338
+  GoogleMaps: 5c13302e6fe6bb6e686b267196586b91cd594225
+  GooglePlaces: e874db179f2675c4f3eeda0b686b540273a578b0
+  GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   IGRPhotoTweaks: 8fe6b62c6599238d860b19b46a85a454e202f502
   JDropDownAlert: fd2aec99b685cb35530283b34f36c7cb46d44170
-  KDCircularProgress: 12f677b2deb02409ab48c6cae1898d146b8ad549
+  KDCircularProgress: 98200c6b8e85d22bc04eb644721d3b1e12b0686b
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   MGSwipeTableCell: dc4eca3212ed38a563b27d6aa7b3c01ce656c1e2
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   Pulsator: d58707c6827ec862cd89fd727424866795dabd24
-  Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   SidebarOverlay: a5365455a2f9d54f70d0765764ca1a2806b1b11d
   SinchVerification-Swift: 6188011479120d3e6ff13fa646189b10194e308e
-  Stripe: 312b22a67af9fa55c246d26148b3f3a9636a0ff2
+  Stripe: 2c4d0a88817361a102886315ff452d90f65e898b
   SwiftOCR: e1a5c7582f074b54df2b1ad273983088b3cf5d45
-  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
-  ZendriveSDK: b444432fdd27a69d1bb20378ab28a9e006887624
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   ZSWTaggedString: c29edd1ccf2ae30a356d56382cfec6cf06bbd70f
   ZSWTappableLabel: cff84c0a55e30f2141f7dac24e5903302a7e35ec
 
-PODFILE CHECKSUM: 78ad7f8db0cad3ea2aacb02fe4b0f5214782b0ce
+PODFILE CHECKSUM: a1e11a6188cc6ee0e23b618b1082170aadca4d43
 
 COCOAPODS: 1.5.3

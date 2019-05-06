@@ -7750,7 +7750,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="01" translatesAutoresizingMaskIntoConstraints="NO" id="zvF-GW-d9l">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="505"/>
+                                <rect key="frame" x="0.0" y="16" width="375" height="489"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lqq-gc-9jC">
                                 <rect key="frame" x="24" y="521" width="343" height="1"/>
@@ -7859,7 +7859,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Lqq-gc-9jC" firstAttribute="trailing" secondItem="YBb-hx-24x" secondAttribute="trailingMargin" constant="8" id="0DS-yu-ujS"/>
-                            <constraint firstItem="zvF-GW-d9l" firstAttribute="top" secondItem="YBb-hx-24x" secondAttribute="top" id="0IU-3b-gBA"/>
+                            <constraint firstItem="zvF-GW-d9l" firstAttribute="top" secondItem="YBb-hx-24x" secondAttribute="top" constant="16" id="0IU-3b-gBA"/>
                             <constraint firstItem="zvF-GW-d9l" firstAttribute="trailing" secondItem="YBb-hx-24x" secondAttribute="trailing" id="1Xh-2s-uoN"/>
                             <constraint firstAttribute="bottomMargin" secondItem="Ea8-Uf-2T3" secondAttribute="bottom" constant="32" id="2oV-HB-ngQ"/>
                             <constraint firstItem="Lqq-gc-9jC" firstAttribute="top" secondItem="zvF-GW-d9l" secondAttribute="bottom" constant="16" id="EIY-ij-XUB"/>
@@ -7870,7 +7870,6 @@
                             <constraint firstItem="zvF-GW-d9l" firstAttribute="leading" secondItem="YBb-hx-24x" secondAttribute="leading" id="rH5-UE-3Aa"/>
                             <constraint firstItem="Zxh-GT-sGu" firstAttribute="centerX" secondItem="YBb-hx-24x" secondAttribute="centerX" id="whK-l7-O6s"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="yBq-ug-ngF"/>
                     </view>
                     <connections>
                         <outlet property="ImageView" destination="zvF-GW-d9l" id="wxo-in-YaS"/>
@@ -7925,7 +7924,7 @@
         <segue reference="qZ2-ky-sOb"/>
         <segue reference="AKk-HW-3e7"/>
         <segue reference="m3P-lZ-1PA"/>
-        <segue reference="x3g-Ne-j0A"/>
+        <segue reference="WVt-ZO-hTE"/>
         <segue reference="fmJ-QB-NEk"/>
         <segue reference="Slo-lK-iba"/>
     </inferredMetricsTieBreakers>

@@ -47,33 +47,54 @@ class reportVC: UIViewController, UITextViewDelegate {
         if reportTxtField.text != "", reportTxtField.text != "Comment" {
             
             
-            
-            DataService.instance.mainDataBaseRef.child("Report").child("Rider").childByAutoId().setValue(["Report_UID": userUID, "Timestamp": ServerValue.timestamp(), "Issue": reportTxtField.text])
-            
-            let appearance = SCLAlertView.SCLAppearance(
-                kTitleFont: UIFont(name: "HelveticaNeue", size: 20)!,
-                kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
-                kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
-                showCloseButton: false,
-                dynamicAnimatorActive: true,
-                buttonsLayout: .horizontal
-            )
-            
-            let alert = SCLAlertView(appearance: appearance)
-            
-            _ = alert.addButton("Got it") {
+            if let name = try? InformationStorage?.object(ofType: String.self, forKey: "user_name") {
+                
+                if let email = try? InformationStorage?.object(ofType: String.self, forKey: "email") {
+                    
+                    DataService.instance.mainDataBaseRef.child("Report").childByAutoId().setValue(["UID": userUID, "Timestamp": ServerValue.timestamp(), "Content": reportTxtField.text, "Name": name!, "Email": email!, "Title": "In-app issue"])
+                    
+                    
+                    let appearance = SCLAlertView.SCLAppearance(
+                        kTitleFont: UIFont(name: "HelveticaNeue", size: 20)!,
+                        kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
+                        kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
+                        showCloseButton: false,
+                        dynamicAnimatorActive: true,
+                        buttonsLayout: .horizontal
+                    )
+                    
+                    let alert = SCLAlertView(appearance: appearance)
+                    
+                    _ = alert.addButton("Got it") {
+                        
+                        
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    }
+                    
+                    let icon = UIImage(named:"lg1")
+                    
+                    _ = alert.showCustom("Thanks!", subTitle: "We will review your issue in 24 hours. Thank you for helping us improve Campus Connect. ", color: UIColor.black, icon: icon!)
+                    
+                    
+                    self.view.endEditing(true)
+                    
+                    
+                }
                 
                 
-                self.dismiss(animated: true, completion: nil)
+            } else {
+                
+                self.showErrorAlert("Oops!", msg: "Unkown error happens, please try again")
+                
                 
             }
             
-            let icon = UIImage(named:"lg1")
-            
-            _ = alert.showCustom("Thanks!", subTitle: "We will review your issue in 24 hours. Thank you for helping us improve Campus Connect. ", color: UIColor.black, icon: icon!)
             
             
-            self.view.endEditing(true)
+            
+            
+            
             
             
         } else {

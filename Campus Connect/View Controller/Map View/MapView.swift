@@ -1516,14 +1516,12 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
 
             
             self.marker.position = pickup
-            self.marker.icon = nil
+            //self.marker.icon = nil
             self.marker.infoWindowAnchor = CGPoint(x: 0.5, y: 0.5)
             
             self.marker.map = self.mapView
             self.marker.isTappable = false
 
-            
-            self.marker.isTappable = false
             
             let myView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
             myView.backgroundColor = UIColor.clear
@@ -1544,8 +1542,16 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             let markerView = UIImageView(image: IconImage)
             markerView.center = myView.center
             
-            self.marker.appearAnimation = .pop
+            
+            
             myView.addSubview(markerView)
+ 
+ 
+            self.marker.appearAnimation = .pop
+            self.marker.title = pickUp_add_Name
+            self.marker.snippet = self.eta
+            
+            print(pickUp_add_Name)
             
             
             
@@ -1562,6 +1568,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
             
             gameMarker.infoWindowAnchor = CGPoint(x: 0.5, y: 0.1)
             gameMarker.map = self.mapView
+           // self.mapView.selectedMarker = self.marker
             self.mapView.selectedMarker = gameMarker
         }
         

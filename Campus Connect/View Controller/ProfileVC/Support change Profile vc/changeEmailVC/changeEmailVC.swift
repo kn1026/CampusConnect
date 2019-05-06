@@ -67,6 +67,9 @@ class changeEmailVC: UIViewController {
             if let email = nickName.text {
                 
                 let finalEmail = email + domain.text!
+                
+                
+                
                 self.email = finalEmail
                 
                 swiftLoader()

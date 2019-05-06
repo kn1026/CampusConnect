@@ -31,7 +31,7 @@ target 'Campus Connect' do
     pod "Device", '~> 3.0.3'
     pod "ZSWTappableLabel", "~> 2.0"
     pod "ZSWTaggedString/Swift", "~> 4.0"
-    pod 'ZendriveSDK', :git => 'https://bitbucket.org/zendrive-root/zendrive_cocoapod.git', :tag => '5.4.3'
+    
     
      
 

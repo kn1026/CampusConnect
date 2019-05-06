@@ -312,8 +312,6 @@ class searchController: UIViewController, UISearchBarDelegate, UITableViewDelega
         place = placeList[indexPath.row]
         
         
-        print(place.Coordinate)
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell") as? searchCell {
             
             

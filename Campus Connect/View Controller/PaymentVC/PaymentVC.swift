@@ -25,8 +25,6 @@ class PaymentVC: UIViewController, UITableViewDelegate, UITableViewDataSource, M
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(PKPaymentAuthorizationViewController.canMakePayments())
-        
         // Do any additional setup after loading the view.
         
         
