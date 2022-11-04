@@ -1695,8 +1695,6 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
         let geoFire = GeoFire(firebaseRef: geofireRef)
         let loc = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
-        
-     
         let query = geoFire.query(at: loc, withRadius: 10)
         checkPriceAgainWhenSearch(query: query)
         
@@ -3571,7 +3569,7 @@ class MapView: UIViewController, GMSMapViewDelegate, UITextViewDelegate, UNUserN
     func calculateSummaryItemsFromSwag(text: String) -> [PKPaymentSummaryItem] {
         var summaryItems = [PKPaymentSummaryItem]()
         let price = NSDecimalNumber(string: finalPrice)
-        
+    
         summaryItems.append(PKPaymentSummaryItem(label: text, amount: price))
         return summaryItems
     }
